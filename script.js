@@ -1,66 +1,54 @@
 
-// Ask the player for their choice of rock, paper, or scissors; 
-//      called playerSelection; lowercase the reponse
+let playerScore = 0
+let computerScore = 0
 
-let playerSelection = prompt("What is your choice? Rock, Paper, or Scissors?", "Rock");
-let lowerPlayerSelection = playerSelection.toLowerCase();
-//return lowerPlayerSelection;
-console.log(lowerPlayerSelection);
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            playRound(button.id);
+        })
+    });
 
+function computerChoice () {
+    let cArray = ['rock', 'paper', 'scissors'];
+    return cArray[Math.floor(Math.random() * cArray.length)]
+}
 
-// Write a function called getComputerChoice that returns 
-//      a random answer of rock, paper, or scissors
+function disableButtons () {
+    buttons.forEach(elem => {
+        elem.disabled = true
+    })
+}
 
-const choices = [
-    "rock",
-    "paper",
-    "scissors"
-]
-let getComputerChoice = choices[Math.floor(Math.random() * choices.length)];
-let computerSelection = getComputerChoice
-console.log(computerSelection);
-//return computerSelection;
-// return (getComputerChoice);
-
-// Compare playerSelection & getComputerChoice to identify winner
-// Alert the win/loss outcome
-
-//let counter = 0,
-
-// var game = function() {
-//     if (times < 6) {
-//         return playRound.repeat(5);
-    
-    //for (let count = 0; count <= 5; count++) { 
-
-function playRound(lowerPlayerSelection, computerSelection) {
-    if (lowerPlayerSelection === computerSelection) {
-        console.log("This is a tie!");
-    } else if (lowerPlayerSelection === 'rock' && computerSelection === 'scissors') {
-        console.log("Player wins!");
-        alert ('win!');
-    } else if (lowerPlayerSelection === 'rock' && computerSelection === 'paper') {
-        console.log('Computer wins!');
-        alert('Computer wins!');
-    } else if (lowerPlayerSelection === 'paper' && computerSelection === ' rock') {
-        console.log('Player wins!');
-        alert('Player wins!');
-    } else if (lowerPlayerSelection === 'paper' && computerSelection === 'scissors') {
-        console.log('Computer wins!');
-        alert('Computer wins!');
-    } else if (lowerPlayerSelection === 'scissors' && computerSelection === 'rock') {
-        console.log('Computer wins!');
-        alert('Computer wins!');
-    } else if (lowerPlayerSelection === 'scissors' && computerSelection === 'paper') {
-        console.log('Player wins!');
-        alert('Player wins!');
+playRound = function (pChoice) {
+    let cChoice = computerChoice();
+    console.log(pChoice);
+    console.log(cChoice);
+    let result = '';
+    if (pChoice === cChoice) {
+        result = ("This is a tie!");
+    } else if ((pChoice == 'rock' && cChoice == 'paper') || 
+               (pChoice == 'paper' && cChoice == 'scissors') ||
+               (pChoice == 'scissors' && cChoice == 'rock')) {
+            
+            computerScore += 1
+            result = ('Computer Wins!' + pChoice + ' beat ' + cChoice + "Player Score: " + playerScore + "Computer Score: " + computerScore)
+            if (computerScore == 5) {
+                result = ("You lose! Refresh the page.")
+                disableButtons();
+            }
     } else {
-        console.log('Unrecognized response')
-        alert('Unrecognized response')
+        playerScore += 1
+        result =('You win! ' + pChoice + ' beats ' + cChoice
+        + "Player score: " + playerScore + "Computer score: " + computerScore)
+        if (playerScore == 5) {
+            result = ("You win! Refresh the page.")
+            disableButtons();
+        }
+
+        
     }
-
-    
-
-console.log(game(playRound(lowerPlayerSelection, computerSelection)));
-return playRound(lowerPlayerSelection, computerSelection);
+    document.getElementById('result').textContent = result
+    console.log(result);
+    return
 }
